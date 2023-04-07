@@ -4,7 +4,8 @@ import Result from "./Result";
 function App() {
   return (
     <>
-      some text
+      <Search />
+      <Result />
     </>
 
   );
