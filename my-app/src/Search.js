@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { useState } from 'react'
 
-function Search() {
+function Search({selectedTypes, setSelectedTypes}) {
     const [Types, setTypes] = useState([])
 
     // called once when component is mounted
@@ -15,6 +15,15 @@ function Search() {
     fetchTypes()
   }, [])
 
+  const handleChange = (e) => {
+    const {value, checked} = e.target
+    if (checked) {
+        setSelectedTypes([...selectedTypes, value])
+    } else {
+        setSelectedTypes(selectedTypes.filter(type => type !== value))
+        }
+    }
+
   return (
     <div>
         {
@@ -24,6 +33,7 @@ function Search() {
                     type="checkbox"
                     value={type}
                     id={type}
+                    onChange={handleChange}
                     />
             
             
