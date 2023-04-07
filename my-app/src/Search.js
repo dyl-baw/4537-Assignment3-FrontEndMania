@@ -6,7 +6,7 @@ import { useState } from 'react'
 function Search() {
     const [Types, setTypes] = useState([])
 
-
+    // called once when component is mounted
    useEffect(() => {
     async function fetchTypes() {
       const response = await axios.get('https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/types.json')
@@ -16,7 +16,20 @@ function Search() {
   }, [])
 
   return (
-    <div>Search</div>
+    <div>
+        {
+            Types.map(type => <div key ={type}>
+                <label htmlFor={type}>{type}</label>
+                <input
+                    type="checkbox"
+                    value={type}
+                    id={type}
+                    />
+            
+            
+            </div>)
+        }
+    </div>
   )
 }
 
