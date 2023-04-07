@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import Dashboard from './Dashboard';
-const dotenv = require('dotenv');
-dotenv.config();
+// require("dotenv").config();
+
+
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -13,7 +14,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/login", { username, password });
+      const res = await axios.post("http://localhost:8080/login", { username, password });
       setUser(res.data);
       setAccessToken(res.headers['auth-token-access']);
       setRefreshToken(res.headers['auth-token-refresh']);
