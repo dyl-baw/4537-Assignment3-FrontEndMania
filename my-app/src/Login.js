@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import Dashboard from './Dashboard';
+const dotenv = require('dotenv');
+dotenv.config();
 
 function Login() {
   const [username, setUsername] = useState('');
