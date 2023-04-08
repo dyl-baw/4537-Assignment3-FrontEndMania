@@ -5,6 +5,16 @@ import { useState } from 'react'
 
 function Result({selectedTypes}) {
 
+    const x = (id) => {
+        if (id < 10) {
+            return "00"
+        } else if (id < 100) {
+            return "0"
+        } else {
+            return ""
+        }
+    }
+
     const [pokemons, setPokemons] = useState([])
   
 
@@ -30,8 +40,11 @@ function Result({selectedTypes}) {
                 if (selectedTypes.every(type => pokemon.type.includes(type))) {
                 return (
                     <>
+                    <div className='pokemon_list'>
                         {pokemon.name.english}
+                        <img src = {`https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${x(pokemon.id)}${pokemon.id}.png`} alt={pokemon.name.english} />
                         <br/>
+                     </div>
                      </>
                         )   
                     }
