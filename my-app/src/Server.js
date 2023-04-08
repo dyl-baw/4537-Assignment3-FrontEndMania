@@ -43,6 +43,11 @@ const start = asyncWrapper(async () => {
         const doc = await userModel.findOne({ "username": "admin" })
         if (!doc)
             userModel.create({ username: "admin", password: bcrypt.hashSync("admin", 10), role: "admin", email: "admin@admin.ca" })
+        
+        const doc1 = await userModel.findOne({ "username": "user" })
+        if (!doc1)
+            userModel.create({ username: "user", password: bcrypt.hashSync("user", 10), role: "user", email:"user@user.ca"})
+
     })
 })
 start()

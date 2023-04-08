@@ -14,14 +14,19 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8080/login", { username, password });
-      setUser(res.data);
-      setAccessToken(res.headers['auth-token-access']);
-      setRefreshToken(res.headers['auth-token-refresh']);
+        const res = await axios.post("http://localhost:8080/login", { username, password });
+        setUser(res.data.user);
+        console.log(res.headers);
+        const auth = res.headers['authorization'];
+        const accessParsed = auth.split(' ')[1];
+        const refreshParsed = auth.split(' ')[3];
+        setAccessToken(accessParsed);
+        setRefreshToken(refreshParsed);
+        console.log("here"+auth)
     } catch (err) {
-      console.log(err);
+        console.log(err);
     }
-  }
+}
 
   return (
     <div>
@@ -46,7 +51,7 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <br />
-          <button type="submit">
+          <button type="submit" value="submit">
             Login
           </button>
         </form>
