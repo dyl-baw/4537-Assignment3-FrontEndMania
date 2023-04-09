@@ -340,7 +340,7 @@ search-checkbox tr:nth-child(even) {
     opacity: 1;
 }
 
-.search-container {
+.search-box {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
