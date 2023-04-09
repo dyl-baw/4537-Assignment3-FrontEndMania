@@ -126,6 +126,32 @@ app.get('/logout', asyncWrapper(async (req, res) => {
   res.send("Logged out")
 }))
 
+// attempting Logout
+
+app.post('/logout', asyncWrapper(async (req, res) => {
+  const auth = req.header('Authorization');
+  console.log("logout auth: " + auth);
+  if (auth === undefined || auth === null) {
+    throw new PokemonAuthError("Token format invalid. Please log in again.")
+  }
+  const tokenParsed = auth.split(" ");
+  if (tokenParsed.length < 4) {
+    throw new PokemonAuthError("Token format invalid. Please log in again.")
+  }
+  const bearer = tokenParsed[0];
+  const accessToken = tokenParsed[1];
+  const refreshToken = tokenParsed[3];
+
+  try {
+    const user = await userModel.findOne({ token: accessToken })
+    const updated = await userModel.findOneAndUpdate({ token: user.token }, { token: "", token_invalid: true }, { new: true })
+    refreshTokens = refreshTokens.filter(token => token !== refreshToken)
+
+    res.send({ 'user': updated, 'refreshTokens': refreshTokens })
+  } catch (error) {
+    throw new PokemonAuthError("User not found")
+  }
+}))
 
 
 // const { findOne } = require("./userModel.js")
