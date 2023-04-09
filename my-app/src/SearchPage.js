@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import Logout from './Logout';
 import Search from './Search';
 import Pagination from './Pagination';
 import FilteredPokemons from './FilteredPokemon';
@@ -95,6 +96,8 @@ function SearchPage(props) {
                 setCount={setCount}
                 pageNumber={pageNumber}
             />
+            <Logout {...props}
+             />
         </div>
     );
 }
