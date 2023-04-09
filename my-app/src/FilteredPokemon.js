@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import jwt_decode from "jwt-decode"
 import { useState } from 'react'
-// import PokemonBox from './PokemonBox'
+import PokemonPopUp from './PokemonPopUp'
 const axiosJWT = axios.create()
 
 function FilteredPokemons(
@@ -68,14 +68,17 @@ function FilteredPokemons(
     
         setCount(filtered.length);
     
-        const pokemonsPerPage = 10;
+        const pokemonsPerPage = 5;
         const startIndex = (pageNumber - 1) * pokemonsPerPage;
         const endIndex = startIndex + pokemonsPerPage;
     
         setFilteredPokemons(filtered.slice(startIndex, endIndex));
     }, [searchQuery, pokemons, pageNumber, typeSelectedArray]);
     
-
+    const handlePokemonPopUp = (pokemon) => {
+        setSelectedPokemon(pokemon);
+        setShowModal(true);
+    };
 
     return (
         <div className='pokemon-grid'>
@@ -85,13 +88,18 @@ function FilteredPokemons(
                         var id = '00' + pokemon.id;
                         id = id.slice(-3);
 
-                        return <div key={pokemon.id} className="pokemon-list">
+                        return <div key={pokemon.id} className="pokemon-list" onClick={() => handlePokemonPopUp(pokemon)}>
                             <img key={id} className="pokemon-image" src={`https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${id}.png`} alt={pokemon.name.english} />
                             <span key={pokemon.name.english}>{pokemon.name.english}</span>
                             </div>
                     // }
                 })
             }
+            <PokemonPopUp
+                showModal={showModal}
+                setShowModal={setShowModal}
+                pokemon={selectedPokemon}
+                />
         </div>
     )
 }

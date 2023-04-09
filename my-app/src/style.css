@@ -435,3 +435,96 @@ nav ul li a {
 nav ul li a:hover {
     color: #ccc;
 }
+
+/* Pokemon Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #444;
+}
+
+.pokemon-image {
+  animation: spin 2s ease-in-out forwards;
+    display: block;
+    margin: 20px auto;
+    width: 200px;
+    height: auto;
+}
+
+.pokemon-type {
+    display: flex;
+}
+
+.modal-overlay h2 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 1rem 0;
+    color: #3e3e3e;
+}
+
+.modal-overlay span {
+    font-size: 16px;
+    margin: 0.5rem 0.5rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.modal-overlay p {
+    font-size: 18px;
+    color: #555;
+    margin: 0;
+}
+
+.modal-overlay table {
+    width: 45%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.modal-overlay tbody {
+    padding: 0;
+    margin-top: 10px;
+}
+
+.modal-overlay td {
+    font-size: 16px;
+    color: #666;
+    padding: 0.3rem 0;
+}
+
+.stat {
+    font-weight: 700;
+    text-align: start;
+}
