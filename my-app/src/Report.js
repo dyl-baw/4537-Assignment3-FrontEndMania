@@ -9,7 +9,7 @@ function Report({ id, accessToken, setAccessToken, refreshToken }) {
   useEffect(() => {
     const start = async () => {
       try {
-        const res = await axiosJWT.get(`http://localhost:6001/report?id=${id}`, {
+        const res = await axiosJWT.get(`http://localhost:8080/report?id=${id}`, {
           headers: {
             'auth-token-access': accessToken
           }
