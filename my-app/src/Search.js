@@ -3,44 +3,67 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { useState } from 'react'
 
-function Search({selectedTypes, setSelectedTypes}) {
-    const [Types, setTypes] = useState([])
+function Search({
+  setTypeSelectedArray,
+  typeSelectedArray = [],
+  setSearchQuery,
+  searchQuery = '',
+}) {
+  const [types, setTypes] = useState([]);
 
-    // called once when component is mounted
-   useEffect(() => {
+  useEffect(() => {
     async function fetchTypes() {
-      const response = await axios.get('https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/types.json')
-      setTypes(response.data.map(type => type.english))
+      const response = await axios.get(
+        'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/types.json',
+      );
+      setTypes(response.data.map((type) => type.english));
     }
-    fetchTypes()
-  }, [])
+    fetchTypes();
+  }, []);
 
-  const handleChange = (e) => {
-    const {value, checked} = e.target
+  const handleClick = (event) => {
+    const { value, checked } = event.target;
+
     if (checked) {
-        setSelectedTypes([...selectedTypes, value])
+      setTypeSelectedArray((typeSelectedArray) => [
+        ...typeSelectedArray,
+        value,
+      ]);
     } else {
-        setSelectedTypes(selectedTypes.filter(type => type !== value))
-        }
+      setTypeSelectedArray((typeSelectedArray) =>
+        typeSelectedArray.filter((type) => type !== value),
+      );
     }
+  };
 
   return (
-    <div>
-        {
-            Types.map(type => <div key ={type}>
-                <label htmlFor={type}>{type}</label>
-                <input
-                    type="checkbox"
-                    value={type}
-                    id={type}
-                    onChange={handleChange}
-                    />
-            
-            
-            </div>)
+    <div className="search-box">
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Search Pokemon..."
+        value={searchQuery}
+        onChange={(event) =>
+          setSearchQuery(event.target.value.trim().toLowerCase())
         }
+      />
+      <div className="search-checkbox">
+        {types.map((type) => (
+          <div key={type}>
+            <input
+              type="checkbox"
+              value={type}
+              id={type}
+              onChange={handleClick}
+            />
+            <label className="checkbox-label" htmlFor={type}>
+              {type}
+            </label>
+          </div>
+        ))}
+      </div>
     </div>
-  )
+  );
 }
 
 export default Search
