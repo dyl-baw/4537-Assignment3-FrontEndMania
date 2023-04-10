@@ -59,6 +59,35 @@ app.use(cors({
 
 app.use(express.json())
 
+//creating schema for reports
+const reportSchema = new mongoose.Schema({
+  timestamp: { type: Date, required: true },
+  tracked_date: { type: String, required: true },
+  user: { type: String, required: true },
+  endpoint: { type: String, required: true },
+  response_code: { type: Number, required: true },
+  message: { type: String, required: true },
+});
+
+const Report = mongoose.model("reports", reportSchema);
+
+
+const routeTracking = async (req, res, next) => {
+  res.on("finish", async () => {
+    let currentDate = new Date();
+    await Report.create({
+      timestamp: currentDate,
+      tracked_date: currentDate.toJSON().slice(0, 10),
+      user: req.user ? req.user : "Visitor",
+      endpoint: (req.baseUrl == undefined ? "" : req.baseUrl) + req.path,
+      response_code: res.statusCode,
+      message: res.statusMessage,
+    });
+  });
+  next();
+};
+
+app.use(routeTracking);
 
 //AuthServer Starts Here
 const bcrypt = require("bcrypt")
