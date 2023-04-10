@@ -16,7 +16,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const res = await axios.post("https://assignment3-backend-x7jf.onrender.com/login", { username, password });
+        const res = await axios.post("http://localhost:8080/login", { username, password });
         setUser(res.data.user);
         console.log(res.headers);
         const auth = res.headers['authorization'];

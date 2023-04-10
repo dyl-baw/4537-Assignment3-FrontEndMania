@@ -55,7 +55,7 @@ function Logout({ setUser, accessToken, refreshToken, setAccessToken, setRefresh
     async function handleLogout() {
         setLoading(true);
         try {
-            const res = await axiosJWT.post('https://assignment3-backend-x7jf.onrender.com/logout', {}, {
+            const res = await axiosJWT.post('http://localhost:8080/logout', {}, {
                 headers: {
                     'Authorization': `Bearer ${accessToken} Refresh ${refreshToken}`
                 }

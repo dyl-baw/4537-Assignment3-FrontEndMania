@@ -30,7 +30,7 @@ function FilteredPokemons(
 
     const refreshAccessToken = async () => {
         try {
-            const res = await axios.post("https://assignment3-backend-x7jf.onrender.com/requestNewAccessToken", {}, {
+            const res = await axios.post("http://localhost:8080/requestNewAccessToken", {}, {
                 headers: {
                     'Authorization': `Bearer ${accessToken} Refresh ${refreshToken}`
                 }
