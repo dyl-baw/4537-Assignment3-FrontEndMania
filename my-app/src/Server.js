@@ -53,7 +53,10 @@ const start = asyncWrapper(async () => {
 start()
 
 app.use(cors({
-    exposedHeaders: ['Authorization']
+    exposedHeaders: ['Authorization'],
+    origin: [
+      "https://assignment3-frontend.onrender.com",
+        ],
 }))
 
 
