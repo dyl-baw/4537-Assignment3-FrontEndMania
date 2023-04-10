@@ -293,6 +293,278 @@ app.patch('/api/v1/pokemon/:id', asyncWrapper(async (req, res) => {
   // } catch (err) { res.json(handleErr(err)) }
 }))
 
+app.get("/report", async (req, res) => {
+  const reportId = req.query.id;
+  const oneWeekOffset = 24 * 60 * 60 * 1000 * 7; //7 days
+  const currentDate = new Date();
+  var startDate = new Date();
+  startDate.setDate(currentDate.getTime() - oneWeekOffset);
+  var reportResult;
+  switch (reportId) {
+    case "1":
+      reportResult = await Report.aggregate([
+        {
+          $match: { timestamp: { $gte: startDate, $lte: currentDate } },
+        },
+        {
+          $group: {
+            _id: {
+              unique_user: "$user",
+              tracking_date: "$tracked_date",
+            },
+          },
+        },
+        {
+          $group: {
+            _id: "$_id.tracking_date",
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: -1 } },
+        {
+          $project: {
+            _id: 0,
+            tracking_date: "$_id",
+            count: "$count",
+          },
+        },
+      ]);
+      res.json(reportResult);
+      break;
+    case "2":
+      reportResult = await Report.aggregate([
+        {
+          $match: { timestamp: { $gte: startDate, $lte: currentDate } },
+        },
+        {
+          $group: {
+            _id: "$user",
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            _id: 0,
+            user: "$_id",
+            count: "$count",
+          },
+        },
+      ]);
+      res.json(reportResult);
+      break;
+    case "3":
+      reportResult = await Report.aggregate([
+        {
+          $facet: {
+            "/register": [
+              { $match: { endpoint: "/register" } },
+              { $group: { _id: "$user", count: { $sum: 1 } } },
+              { $sort: { count: -1, _id: -1 } },
+              { $limit: 3 },
+              {
+                $project: {
+                  _id: 0,
+                  user: "$_id",
+                  count: "$count",
+                },
+              },
+            ],
+            "/login": [
+              { $match: { endpoint: "/login" } },
+              { $group: { _id: "$user", count: { $sum: 1 } } },
+              { $sort: { count: -1, _id: -1 } },
+              { $limit: 3 },
+              {
+                $project: {
+                  _id: 0,
+                  user: "$_id",
+                  count: "$count",
+                },
+              },
+            ],
+            "/requestNewAccessToken": [
+              { $match: { endpoint: "/requestNewAccessToken" } },
+              { $group: { _id: "$user", count: { $sum: 1 } } },
+              { $sort: { count: -1, _id: -1 } },
+              { $limit: 3 },
+              {
+                $project: {
+                  _id: 0,
+                  user: "$_id",
+                  count: "$count",
+                },
+              },
+            ],
+            "/report": [
+              { $match: { endpoint: "/report" } },
+              { $group: { _id: "$user", count: { $sum: 1 } } },
+              { $sort: { count: -1, _id: -1 } },
+              { $limit: 3 },
+              {
+                $project: {
+                  _id: 0,
+                  user: "$_id",
+                  count: "$count",
+                },
+              },
+            ],
+            "/logout": [
+              { $match: { endpoint: "/logout" } },
+              { $group: { _id: "$user", count: { $sum: 1 } } },
+              { $sort: { count: -1, _id: -1 } },
+              { $limit: 3 },
+              {
+                $project: {
+                  _id: 0,
+                  user: "$_id",
+                  count: "$count",
+                },
+              },
+            ],
+          },
+        },
+      ]);
+      res.json(reportResult);
+      break;
+    case "4":
+      reportResult = await Report.aggregate([
+        { $match: { response_code: { $gte: 400, $lte: 599 } } },
+        {
+          $facet: {
+            "/register": [
+              { $match: { endpoint: "/register" } },
+              {
+                $group: {
+                  _id: {
+                    error_code: "$response_code",
+                    message: "$message",
+                  },
+                  count: { $sum: 1 },
+                },
+              },
+              { $sort: { count: -1, _id: -1 } },
+              {
+                $project: {
+                  _id: 0,
+                  error_code: "$_id.error_code",
+                  message: "$_id.message",
+                  count: "$count",
+                },
+              },
+            ],
+            "/login": [
+              { $match: { endpoint: "/login" } },
+              {
+                $group: {
+                  _id: {
+                    error_code: "$response_code",
+                    message: "$message",
+                  },
+                  count: { $sum: 1 },
+                },
+              },
+              { $sort: { count: -1, _id: -1 } },
+              {
+                $project: {
+                  _id: 0,
+                  error_code: "$_id.error_code",
+                  message: "$_id.message",
+                  count: "$count",
+                },
+              },
+            ],
+            "/requestNewAccessToken": [
+              { $match: { endpoint: "/requestNewAccessToken" } },
+              {
+                $group: {
+                  _id: {
+                    error_code: "$response_code",
+                    message: "$message",
+                  },
+                  count: { $sum: 1 },
+                },
+              },
+              { $sort: { count: -1, _id: -1 } },
+              {
+                $project: {
+                  _id: 0,
+                  error_code: "$_id.error_code",
+                  message: "$_id.message",
+                  count: "$count",
+                },
+              },
+            ],
+            "/report": [
+              { $match: { endpoint: "/report" } },
+              {
+                $group: {
+                  _id: {
+                    error_code: "$response_code",
+                    message: "$message",
+                  },
+                  count: { $sum: 1 },
+                },
+              },
+              { $sort: { count: -1, _id: -1 } },
+              {
+                $project: {
+                  _id: 0,
+                  error_code: "$_id.error_code",
+                  message: "$_id.message",
+                  count: "$count",
+                },
+              },
+            ],
+            "/logout": [
+              { $match: { endpoint: "/logout" } },
+              {
+                $group: {
+                  _id: {
+                    error_code: "$response_code",
+                    message: "$message",
+                  },
+                  count: {$sum: 1},
+                },
+              },
+              { $sort: { count: -1, _id: -1 } },
+              {
+                $project: {
+                  _id: 0,
+                  error_code: "$_id.error_code",
+                  message: "$_id.message",
+                  count: "$count",
+                },
+              },
+            ],
+          },
+        },
+      ]);
+      res.json(reportResult);
+      break;
+    case "5":
+      reportResult = await Report.aggregate([
+        { $match: { response_code: { $gte: 400, $lte: 599 } } },
+        { $sort: { timestamp: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            _id: 0,
+            timestamp: "$timestamp",
+            user: "$user",
+            endpoint: "$endpoint",
+            response_code: "$response_code",
+            message: "$message",
+          },
+        },
+      ]);
+      res.json(reportResult);
+      break;
+    default:
+      res.status(404).send("Report not found.");
+  }
+});
 
 
 app.use(handleErr)
