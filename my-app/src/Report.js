@@ -194,7 +194,7 @@ function Report({ id, accessToken, setAccessToken, refreshToken }) {
         const start = async () => {
             try {
                 console.log(accessToken);
-                const res = await axios.get(`http://localhost:8080/report?id=${id}`, {
+                const res = await axios.get(`https://assignment3-backend-x7jf.onrender.com/report?id=${id}`, {
                     headers: {
                         'Authorization': `Bearer ${accessToken} Refresh ${refreshToken}`
                     }
@@ -213,7 +213,7 @@ function Report({ id, accessToken, setAccessToken, refreshToken }) {
     const refreshAccessToken = async () => {
         try {
             const res = await axios.post(
-                `http://localhost:8080/requestNewAccessToken`,
+                `https://assignment3-backend-x7jf.onrender.com/requestNewAccessToken`,
                 {},
                 {
                     headers: {

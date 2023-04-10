@@ -37,7 +37,7 @@ function Logout({ setUser, accessToken, refreshToken, setAccessToken, setRefresh
 
     async function refreshAccessToken() {
         try {
-            const res = await axios.post("http://localhost:8080/requestNewAccessToken", {}, {
+            const res = await axios.post("https://assignment3-backend-x7jf.onrender.com/requestNewAccessToken", {}, {
                 headers: {
                     'Authorization': `Bearer ${accessToken} Refresh ${refreshToken}`
                 }
@@ -55,7 +55,7 @@ function Logout({ setUser, accessToken, refreshToken, setAccessToken, setRefresh
     async function handleLogout() {
         setLoading(true);
         try {
-            const res = await axiosJWT.post('http://localhost:8080/logout', {}, {
+            const res = await axiosJWT.post('https://assignment3-backend-x7jf.onrender.com/logout', {}, {
                 headers: {
                     'Authorization': `Bearer ${accessToken} Refresh ${refreshToken}`
                 }

@@ -12,7 +12,7 @@ function Pokemon({ pokemon, setCurrentId,currentId ,accessToken,refreshToken, se
   axiosJWT.interceptors.request.use(async function (config) {
     const decodedToken=jwt_decode(accessToken);
     if(decodedToken.exp < Date.now()/1000){
-      const res=await axios.get('http://localhost:8080/requestNewAccessToken',{
+      const res=await axios.get('https://assignment3-backend-x7jf.onrender.com/requestNewAccessToken',{
         headers:{'auth-token-refresh':refreshToken} 
       })
 
@@ -31,7 +31,7 @@ function Pokemon({ pokemon, setCurrentId,currentId ,accessToken,refreshToken, se
 
   //  const { id } = useParams()
   useEffect(() => {async function fet(){
-    const res = await axiosJWT.get(`http://localhost:8080/${pokemon.id}&userid=${userid}`, {
+    const res = await axiosJWT.get(`https://assignment3-backend-x7jf.onrender.com/${pokemon.id}&userid=${userid}`, {
       headers: {
         'auth-token-access': accessToken
       }
